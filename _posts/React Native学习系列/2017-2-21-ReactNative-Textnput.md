@@ -1,6 +1,6 @@
 ---
 layout: post
-title: RN系列教程(三)View&&Text
+title: RN系列教程(三)TextInput
 categories: [blog ]
 tags: [React Native基础系列, ]
 description: 
