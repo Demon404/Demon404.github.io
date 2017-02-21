@@ -114,7 +114,7 @@ secureTextEntry (bool)设置是否加密，常用于密码输入
 selectionColor:(str)设置输入框高亮时的颜色  
 安卓输入框默认的有下划线，可以设置这个属性来隐藏  
 underlineColorAndroid='transparent'   
-####Third  
+####	Final 
 基本上常用的属性都介绍完了，那么它的样式呢？  
 TextInput集成了Text的所有样式，如果有不明白的，可以看一下我的第一篇文章  
 
