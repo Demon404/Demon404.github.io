@@ -82,7 +82,7 @@ TextInput是一个允许用户在应用中通过键盘输入文本的基本组�
 	});
 	
 这样，我们就创建了一个这样的页面  
-![](/Users/demon/Desktop/Simulator Screen Shot 2017年2月21日 下午4.39.33.png)  
+![](http://upload-images.jianshu.io/upload_images/2781235-3ce0f8e5f73960bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
 从上到下，依次是输入框1-4，那么我们现在就可以来学习如何使用了  
 
 ####	Second  
