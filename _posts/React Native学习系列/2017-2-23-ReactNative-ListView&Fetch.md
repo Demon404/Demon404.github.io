@@ -5,12 +5,17 @@ categories: [blog ]
 tags: [React Native基础系列, ]  
 description: 
 ---  
-###前言  
+
+###	前言  
 去年我写了一个教程，[手把手教你写一个RN小程序!](http://demon404.com/blog/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99%E4%B8%80%E4%B8%AARN%E5%B0%8F%E7%A8%8B%E5%BA%8F.html),里面其实对ListView已经做了一些详解，不过由于那个项目接口停止维护，再加上RN教程准备写一个系列，所以重新写一篇文章来完善ListView的使用。另外，ListView一般都是配合数据来使用的，所以这里我把网络请求也顺带简单的讲解一下。本文会使用豆瓣api来进行数据的解析。  
-###fetch()  
+
+###	fetch()  
 React Native提供了和web标准一致的[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，用于满足开发者访问网络的需求。那么如何使用呢？  
-####fetch使用  
-	fetch('https://api.douban.com/v2/movie/top250')//豆瓣电影Top250
+
+####	fetch使用  
+	
+		fetch('https://api.douban.com/v2/movie/top250')//豆瓣电影Top250  
+		
 从任意地址获取数据，只需要这么写就可以了，把地址传递给fetch()方法。  
 	  
 	  fetch('https://api.douban.com/v2/movie/top250')
@@ -21,9 +26,11 @@ React Native提供了和web标准一致的[Fetch API](https://developer.mozilla.
              data: responseData,
              });
            })
-        .done();  
+        .done();    
+        
 以上是fetch通过get请求获取的数据，这个可以获取数据源data，那么我们登录注册一般都是用的post提交方式，那该如何写呢？  
 fetch()还有可选的第二个参数用来指定请求的方法，你可以指定header参数，或是指定使用POST方法，又或是提交数据等等。   
+  
 	
 	fetch('https://mywebsite.com/endpoint/', {
  	  method: 'POST',//指定POST方法
@@ -42,15 +49,19 @@ fetch()还有可选的第二个参数用来指定请求的方法，你可以指�
 	}
 	
 	})
-      .done();  
-简单的fetch()请求就介绍到这里，有想法的同学可以参考该文章：[【翻译】这个API很“迷人”——(新的Fetch API)](https://w3ctech.com/topic/854)  
+      .done();    
+      
+
+简单的fetch()请求就介绍到这里，有想法的同学可以参考该文章：[翻译 这个API很“迷人”——新的Fetch API](https://w3ctech.com/topic/854)  
+  
 >温馨提示，iOS默认不支持http请求，请在Xcode中设置  
 >
 >1、在Info.plist中添加NSAppTransportSecurity类型Dictionary。  
 >
 2、在NSAppTransportSecurity下添加NSAllowsArbitraryLoads类型Boolean,值设为YES    
 
-###组件生命周期  
+
+###	组件生命周期  
 一般来说，一个组件类由 extends Component创建，并且提供一个 render方法以及其他可选的生命周期函数、组件相关的事件或方法来定义。  
 >getInitialState()函数  初始化 this.state 的值，只在组件装载之前调用一次。  
 > getDefaultProps()函数  只在组件创建时调用一次并缓存返回的对象,因为这个方法在实例初始化之前调用，所以在这个方法里面不能依赖 this 获取到这个组件的实例。  
@@ -66,7 +77,8 @@ fetch()还有可选的第二个参数用来指定请求的方法，你可以指�
 > componentWillUpdate()  
 > componentDidUpdate  
 
-###ListView  
+
+###	ListView  
 ListView是一个常用核心组件，用于高效地显示一个可以垂直滚动的变化的数据列表。通过创建一个ListView.DataSource数据源，然后给它传递一个普通的数据数组，再使用数据源来实例化一个ListView组件，并且定义它的renderRow回调函数，这个函数会接受数组中的每个数据作为参数，返回一个可渲染的组件（作为listview的每一行）。  
 	
 	cellRow(data) {
@@ -74,9 +86,8 @@ ListView是一个常用核心组件，用于高效地显示一个可以垂直滚
           <View >//这个是cell的视图
           </View>
       );  
- 	 }
-
-  	render() {
+ 	 	}  
+ 	 	render() {
     	return (
      	 <View style={styles.container}>
        	 <ListView
@@ -95,9 +106,11 @@ ListView是一个常用核心组件，用于高效地显示一个可以垂直滚
  	 }  
 
 renderSectionHeader()方法会为每个section提供一个粘性的标题  
-scrollTo(...args),滚动到指定的x,y偏移处。  
-###ListView和Fetch()结合使用  
-####1.新建一个文件  
+scrollTo(...args),滚动到指定的x,y偏移处。    
+
+###	ListView和Fetch()结合使用   
+ 
+####	1.新建一个文件  
 	
 	import React, { Component } from 'react';
 	import {
@@ -120,20 +133,24 @@ scrollTo(...args),滚动到指定的x,y偏移处。
 	}
 	});  
 
-####2.引入ListView
+
+####	2.引入ListView  
+
 	<ListView initiaListSize={2}
               pageSize={2}
               dataSource={this.state.dataSource}
               renderRow={this.cellRow.bind(this)}
               style={styles.listView}
-   	/>  
+   	/>   
+   	 
 然后根据文档添加数据源dataSource  
 	
 	constructor(props){
 	super(props);
 	const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 	this.state = {dataSource: ds.cloneWithRows([{},])};
-	}  
+	}   
+	 
 我们的Cell也必定不能少啊  
 	
 	cellRow(data) {
@@ -149,7 +166,8 @@ scrollTo(...args),滚动到指定的x,y偏移处。
           </View>
         </TouchableOpacity>
         );
-    }  
+    }    
+    
 OK基本上完工，说好的fetch呢？别着急，慢慢来  
 	
 	componentDidMount() {
@@ -172,12 +190,19 @@ OK基本上完工，说好的fetch呢？别着急，慢慢来
             })
 
         .done
-    }
-恩，测试的话，GET_URL是[https://api.douban.com/v2/movie/top250](https://api.douban.com/v2/movie/top250),
-至此基本上已经完工，大家可以试着做一下
-![from Demon404](http://upload-images.jianshu.io/upload_images/2781235-6e67d8f62258fb5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
-###最后 
-当然要附上我们的源码了，在我的github上:[React-Native-Study](https://github.com/Demon404/React-Native-Study)  
+    }  
+  
+      
+恩，测试的话，GET_URL是[https://api.douban.com/v2/movie/top250](https://api.douban.com/v2/movie/top250)  
+
+至此基本上已经完工，大家可以试着做一下  
+
+![from Demon404](http://upload-images.jianshu.io/upload_images/2781235-6e67d8f62258fb5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)    
+
+###	最后   
+
+当然要附上我们的源码了，在我的github上:[React-Native-Study](https://github.com/Demon404/React-Native-Study)   
+ 
 后续会更新带Header的ListView和用ListView写的九宫格，喜欢的同学可以支持一下，么么哒！
 
 ![from Demon404](http://upload-images.jianshu.io/upload_images/2781235-b945831fba3e7c01.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
