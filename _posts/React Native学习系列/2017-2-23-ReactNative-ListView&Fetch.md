@@ -6,11 +6,16 @@ tags: [React Native基础系列, ]
 description: 
 ---    
 
-### 前言  
+### 前言   
+ 
 去年我写了一个教程，[手把手教你写一个RN小程序!](http://demon404.com/blog/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99%E4%B8%80%E4%B8%AARN%E5%B0%8F%E7%A8%8B%E5%BA%8F.html),里面其实对ListView已经做了一些详解，不过由于那个项目接口停止维护，再加上RN教程准备写一个系列，所以重新写一篇文章来完善ListView的使用。另外，ListView一般都是配合数据来使用的，所以这里我把网络请求也顺带简单的讲解一下。本文会使用豆瓣api来进行数据的解析。  
+  
 ### fetch()  
-React Native提供了和web标准一致的[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，用于满足开发者访问网络的需求。那么如何使用呢？  
-#### fetch使用  
+  
+React Native提供了和web标准一致的[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，用于满足开发者访问网络的需求。那么如何使用呢？    
+
+#### fetch使用   
+ 
 ```javascript
 fetch('https://api.douban.com/v2/movie/top250')//豆瓣电影Top250
 ```  
@@ -29,7 +34,8 @@ fetch('https://api.douban.com/v2/movie/top250')
 .done();  
 ```  
 
-以上是fetch通过get请求获取的数据，这个可以获取数据源data，那么我们登录注册一般都是用的post提交方式，那该如何写呢？  
+以上是fetch通过get请求获取的数据，这个可以获取数据源data，那么我们登录注册一般都是用的post提交方式，那该如何写呢？
+  
 fetch()还有可选的第二个参数用来指定请求的方法，你可以指定header参数，或是指定使用POST方法，又或是提交数据等等。   
   
 ```javascript
@@ -61,7 +67,8 @@ fetch('https://mywebsite.com/endpoint/', {
 > 
  2、在NSAppTransportSecurity下添加NSAllowsArbitraryLoads类型Boolean,值设为YES    
 
-### 组件生命周期  
+### 组件生命周期   
+ 
 一般来说，一个组件类由 extends Component创建，并且提供一个 render方法以及其他可选的生命周期函数、组件相关的事件或方法来定义。  
   
 > getInitialState()函数  初始化 this.state 的值，只在组件装载之前调用一次。  
@@ -81,6 +88,7 @@ fetch('https://mywebsite.com/endpoint/', {
 > componentDidUpdate  
 
 ### ListView  
+  
 ListView是一个常用核心组件，用于高效地显示一个可以垂直滚动的变化的数据列表。通过创建一个ListView.DataSource数据源，然后给它传递一个普通的数据数组，再使用数据源来实例化一个ListView组件，并且定义它的renderRow回调函数，这个函数会接受数组中的每个数据作为参数，返回一个可渲染的组件（作为listview的每一行）。  
   
 ```javascript
