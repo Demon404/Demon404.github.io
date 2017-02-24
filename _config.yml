@@ -1,10 +1,10 @@
 # Site settings
 title: Demon404
-header-img: "img/tree.jpg"
-tagline: "吉光片羽"
+header-img: "umbrella/tree.jpg"
+tagline: "Demon404"
 description: "不忘初心，方得始终！"
 baseurl: ""
-url: "http://azeril.me"
+url: "http://demon404.com"
 #url: "http://localhost:4000"
 
 # About/contact
@@ -68,12 +68,7 @@ defaults:
 
 
 # Comments
-comments :
-  provider : duoshuo
-  duoshuo :
-    short_name : Demon404
-  disqus :
-      short_name : Demon404
+
 
 # Analytics and webmaster tools stuff goes here
 google_analytics: UA-66863061-1
