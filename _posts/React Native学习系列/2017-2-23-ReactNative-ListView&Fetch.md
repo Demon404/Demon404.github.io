@@ -16,13 +16,13 @@ React Native提供了和web标准一致的[Fetch API](https://developer.mozilla.
 
 #### fetch使用   
  
-```javascript
+```
 fetch('https://api.douban.com/v2/movie/top250')//豆瓣电影Top250
 ```  
   
 从任意地址获取数据，只需要这么写就可以了，把地址传递给fetch()方法。  
   
-```javascript 
+```
 fetch('https://api.douban.com/v2/movie/top250')
 //ES6的写法左边代表输入的参数右边是逻辑处理和返回结果
 .then((response) => response.json())
@@ -38,7 +38,7 @@ fetch('https://api.douban.com/v2/movie/top250')
   
 fetch()还有可选的第二个参数用来指定请求的方法，你可以指定header参数，或是指定使用POST方法，又或是提交数据等等。   
   
-```javascript
+```
 fetch('https://mywebsite.com/endpoint/', {
  	  method: 'POST',//指定POST方法
   	  headers: {//指定header参数
@@ -91,7 +91,7 @@ fetch('https://mywebsite.com/endpoint/', {
   
 ListView是一个常用核心组件，用于高效地显示一个可以垂直滚动的变化的数据列表。通过创建一个ListView.DataSource数据源，然后给它传递一个普通的数据数组，再使用数据源来实例化一个ListView组件，并且定义它的renderRow回调函数，这个函数会接受数组中的每个数据作为参数，返回一个可渲染的组件（作为listview的每一行）。  
   
-```javascript
+```
 	cellRow(data) {
       return (
           <View >//这个是cell的视图
@@ -125,7 +125,7 @@ scrollTo(...args),滚动到指定的x,y偏移处。
  
 #### 1.新建一个文件  
   
-```javascript	
+```	
 	import React, { Component } from 'react';
 	import {
  	StyleSheet,
@@ -151,7 +151,7 @@ scrollTo(...args),滚动到指定的x,y偏移处。
 
 #### 2.引入ListView  
 
-```javascript
+```
 	<ListView initiaListSize={2}
               pageSize={2}
               dataSource={this.state.dataSource}
@@ -162,7 +162,7 @@ scrollTo(...args),滚动到指定的x,y偏移处。
  
 然后根据文档添加数据源dataSource   
  
-```javascript	
+```	
 	constructor(props){
 	super(props);
 	const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -172,7 +172,7 @@ scrollTo(...args),滚动到指定的x,y偏移处。
   
 我们的Cell也必定不能少啊   
  
-```javascript	
+```	
 	cellRow(data) {
         return (
             <TouchableOpacity onPress={()=>this.rowPressed(data)}>
@@ -191,7 +191,7 @@ scrollTo(...args),滚动到指定的x,y偏移处。
  
 OK基本上完工，说好的fetch呢？别着急，慢慢来  
   
-```javascript	
+```	
 	componentDidMount() {
         this.fetchData();
     }
