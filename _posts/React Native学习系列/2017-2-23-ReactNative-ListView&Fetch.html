@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>2017-2-23-ReactNative-ListView&Fetch</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/*
+ Solarized Color Schemes originally by Ethan Schoonover
+ http://ethanschoonover.com/solarized
+
+ Ported for PrismJS by Hector Matos
+ Website: https://krakendev.io
+ Twitter Handle: https://twitter.com/allonsykraken)
+*/
+
+/*
+SOLARIZED HEX
+--------- -------
+base03    #002b36
+base02    #073642
+base01    #586e75
+base00    #657b83
+base0     #839496
+base1     #93a1a1
+base2     #eee8d5
+base3     #fdf6e3
+yellow    #b58900
+orange    #cb4b16
+red       #dc322f
+magenta   #d33682
+violet    #6c71c4
+blue      #268bd2
+cyan      #2aa198
+green     #859900
+*/
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #657b83; /* base00 */
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	background: #073642; /* base02 */
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	background: #073642; /* base02 */
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background-color: #fdf6e3; /* base3 */
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #93a1a1; /* base1 */
+}
+
+.token.punctuation {
+	color: #586e75; /* base01 */
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #268bd2; /* blue */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.url,
+.token.inserted {
+	color: #2aa198; /* cyan */
+}
+
+.token.entity {
+	color: #657b83; /* base00 */
+	background: #eee8d5; /* base2 */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #859900; /* green */
+}
+
+.token.function {
+	color: #b58900; /* yellow */
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #cb4b16; /* orange */
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+<style type="text/css">
+div.prism-show-language {
+	position: relative;
+}
+
+div.prism-show-language > div.prism-show-language-label {
+	color: black;
+	background-color: #CFCFCF;
+	display: inline-block;
+	position: absolute;
+	bottom: auto;
+	left: auto;
+	top: 0;
+	right: 0;
+	width: auto;
+	height: auto;
+	font-size: 0.9em;
+	border-radius: 0 0 0 5px;
+	padding: 0 0.5em;
+	text-shadow: none;
+	z-index: 1;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	transform: none;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<table><thead><tr><th>layout</th><th>title</th><th>categories</th><th>tags</th><th>description</th></tr></thead><tbody><tr><td>post</td><td>RN系列教程(四)ListView &amp; fetch</td><td><table><tbody><tr><td>blog</td></tr></tbody></table></td><td><table><tbody><tr><td>React Native基础系列</td></tr></tbody></table></td><td></td></tr></tbody></table>
+<h3 id="toc_0">前言</h3>
+
+<p>去年我写了一个教程，<a href="http://demon404.com/blog/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99%E4%B8%80%E4%B8%AARN%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">手把手教你写一个RN小程序!</a>,里面其实对ListView已经做了一些详解，不过由于那个项目接口停止维护，再加上RN教程准备写一个系列，所以重新写一篇文章来完善ListView的使用。另外，ListView一般都是配合数据来使用的，所以这里我把网络请求也顺带简单的讲解一下。本文会使用豆瓣api来进行数据的解析。  </p>
+
+<h3 id="toc_1">fetch()</h3>
+
+<p>React Native提供了和web标准一致的<a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API</a>，用于满足开发者访问网络的需求。那么如何使用呢？  </p>
+
+<h4 id="toc_2">fetch使用</h4>
+
+<div><pre><code class="language-none">fetch(&#39;https://api.douban.com/v2/movie/top250&#39;)//豆瓣电影Top250</code></pre></div>
+
+<p>从任意地址获取数据，只需要这么写就可以了，把地址传递给fetch()方法。  </p>
+
+<div><pre><code class="language-none">  fetch(&#39;https://api.douban.com/v2/movie/top250&#39;)
+    //ES6的写法左边代表输入的参数右边是逻辑处理和返回结果
+    .then((response) =&gt; response.json())
+    .then((responseData) =&gt; {
+       this.setState({
+         data: responseData,
+         });
+       })
+    .done();  </code></pre></div>
+
+<p>以上是fetch通过get请求获取的数据，这个可以获取数据源data，那么我们登录注册一般都是用的post提交方式，那该如何写呢？<br>
+fetch()还有可选的第二个参数用来指定请求的方法，你可以指定header参数，或是指定使用POST方法，又或是提交数据等等。   </p>
+
+<div><pre><code class="language-none">fetch(&#39;https://mywebsite.com/endpoint/&#39;, {
+  method: &#39;POST&#39;,//指定POST方法
+  headers: {//指定header参数
+    &#39;Accept&#39;: &#39;application/json&#39;,
+    &#39;Content-Type&#39;: &#39;application/json&#39;,
+  },
+ body: JSON.stringify({//设置提交的数据
+    firstParam: &#39;yourValue&#39;,
+    secondParam: &#39;yourOtherValue&#39;,
+})
+}) 
+.then((response) =&gt; response.json())  
+.then((responseData) =&gt; {
+    //responseData是服务器返回的data
+}
+
+})
+  .done();  </code></pre></div>
+
+<p>简单的fetch()请求就介绍到这里，有想法的同学可以参考该文章：<a href="https://w3ctech.com/topic/854">【翻译】这个API很“迷人”——(新的Fetch API)</a>  </p>
+
+<blockquote>
+<p>温馨提示，iOS默认不支持http请求，请在Xcode中设置  </p>
+
+<p>1、在Info.plist中添加NSAppTransportSecurity类型Dictionary。  </p>
+
+<p>2、在NSAppTransportSecurity下添加NSAllowsArbitraryLoads类型Boolean,值设为YES    </p>
+</blockquote>
+
+<h3 id="toc_3">组件生命周期</h3>
+
+<p>一般来说，一个组件类由 extends Component创建，并且提供一个 render方法以及其他可选的生命周期函数、组件相关的事件或方法来定义。  </p>
+
+<blockquote>
+<p>getInitialState()函数  初始化 this.state 的值，只在组件装载之前调用一次。<br>
+getDefaultProps()函数  只在组件创建时调用一次并缓存返回的对象,因为这个方法在实例初始化之前调用，所以在这个方法里面不能依赖 this 获取到这个组件的实例。<br>
+render()  组装生成这个组件的 HTML 结构 ,必须要有的函数  </p>
+</blockquote>
+
+<p>生命周期函数  </p>
+
+<blockquote>
+<p>componentWillMount() 只会在装载之前调用一次，在 render 之前调用，你可以在这个方法里面调用 setState 改变状态<br>
+componentDidMount()  只会在装载完成之后调用一次，在 render 之后调用，从这里开始可以通过 ReactDOM.findDOMNode(this) 获取到组件的 DOM 节点。<br>
+componentWillUnmount()  卸载组件触发<br>
+更新组件时触发的函数：<br>
+componentWillReceiveProps()<br>
+shouldComponentUpdate()<br>
+componentWillUpdate()<br>
+componentDidUpdate  </p>
+</blockquote>
+
+<h3 id="toc_4">ListView</h3>
+
+<p>ListView是一个常用核心组件，用于高效地显示一个可以垂直滚动的变化的数据列表。通过创建一个ListView.DataSource数据源，然后给它传递一个普通的数据数组，再使用数据源来实例化一个ListView组件，并且定义它的renderRow回调函数，这个函数会接受数组中的每个数据作为参数，返回一个可渲染的组件（作为listview的每一行）。  </p>
+
+<div><pre><code class="language-none">cellRow(data) {
+  return (
+      &lt;View &gt;//这个是cell的视图
+      &lt;/View&gt;
+  );  
+ }
+
+render() {
+    return (
+     &lt;View style={styles.container}&gt;
+     &lt;ListView
+            initiaListSize={1} //指定在组件刚挂载的时候渲染多少行数据。用来确保首屏显示合适数量的数据
+            //onChangeVisibleRows={()=&gt;{}}//当可见的行的集合变化的时候调用此回调函数  
+            //onEndReached={()=&gt;{}}//当所有的数据都已经渲染过，并且列表被滚动到距离最底部不足onEndReachedThreshold个像素的距离时调用。配合onEndReachedThreshold使用
+            onEndReachedThreshold={10} //调用onEndReached之前的临界值，单位是像素。
+            pageSize={3} //每次渲染的行数
+            removeClippedSubviews={true}//用于提升大列表的滚动性能。需要给行容器添加样式overflow:&#39;hidden&#39;。（Android已默认添加此样式）。此属性默认开启。
+            dataSource={this.state.dataSource} //列表依赖的数据源
+            renderRow={this.cellRow.bind(this)}//(rowData, sectionID, rowID, highlightRow) =&gt; renderable 从数据源(Data source)中接受一条数据，以及它和它所在section的ID。返回一个可渲染的组件来为这行数据进行渲染。
+            style={styles.listView}
+     /&gt;
+     &lt;/View&gt;
+    );
+ }  </code></pre></div>
+
+<p>renderSectionHeader()方法会为每个section提供一个粘性的标题<br>
+scrollTo(...args),滚动到指定的x,y偏移处。  </p>
+
+<h3 id="toc_5">ListView和Fetch()结合使用</h3>
+
+<h4 id="toc_6">1.新建一个文件</h4>
+
+<div><pre><code class="language-none">import React, { Component } from &#39;react&#39;;
+import {
+StyleSheet,
+Text,
+View,
+ListView
+} from &#39;react-native&#39;;
+export default class TestDemo extends Component {
+render() {
+    return (
+    &lt;View style={styles.container}&gt;
+    &lt;/View&gt;
+    );
+}
+}
+const styles = StyleSheet.create({
+container:{
+flex:1,
+}
+});  </code></pre></div>
+
+<h4 id="toc_7">2.引入ListView</h4>
+
+<div><pre><code class="language-none">&lt;ListView initiaListSize={2}
+          pageSize={2}
+          dataSource={this.state.dataSource}
+          renderRow={this.cellRow.bind(this)}
+          style={styles.listView}
+/&gt;  </code></pre></div>
+
+<p>然后根据文档添加数据源dataSource  </p>
+
+<div><pre><code class="language-none">constructor(props){
+super(props);
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) =&gt; r1 !== r2});
+this.state = {dataSource: ds.cloneWithRows([{},])};
+}  </code></pre></div>
+
+<p>我们的Cell也必定不能少啊  </p>
+
+<div><pre><code class="language-none">cellRow(data) {
+    return (
+        &lt;TouchableOpacity onPress={()=&gt;this.rowPressed(data)}&gt;
+      &lt;View&gt;
+        &lt;View style={styles.cellStyle}&gt;
+            &lt;Image style={{margin:10,width:100, resizeMode:&#39;contain&#39;,height:(WIDTH-40)/2}}
+                   source={{uri: data.images.large}}
+            /&gt;
+            &lt;Text style={styles.title}&gt;{data.title}&lt;/Text&gt;
+        &lt;/View&gt;
+      &lt;/View&gt;
+    &lt;/TouchableOpacity&gt;
+    );
+}  </code></pre></div>
+
+<p>OK基本上完工，说好的fetch呢？别着急，慢慢来  </p>
+
+<div><pre><code class="language-none">componentDidMount() {
+    this.fetchData();
+}
+fetchData() {
+    fetch(GET_URL)
+        //ES6的写法左边代表输入的参数右边是逻辑处理和返回结果
+        .then((response) =&gt; response.json())
+        .then((responseData) =&gt; {
+            if (responseData.subjects) {
+            //我们需要在数据解析完成的时候来setdataSource
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(responseData.subjects),
+                });
+            } else {
+                //do Something 
+                Alert.alert(&#39;暂时没有数据&#39;);
+            }
+        })
+
+    .done
+}</code></pre></div>
+
+<p>恩，测试的话，GET_URL是<a href="https://api.douban.com/v2/movie/top250">https://api.douban.com/v2/movie/top250</a>,
+至此基本上已经完工，大家可以试着做一下
+<img src="http://upload-images.jianshu.io/upload_images/2781235-6e67d8f62258fb5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="from Demon404">
+)  </p>
+
+<h3 id="toc_8">最后</h3>
+
+<p>当然要附上我们的源码了，在我的github上:<a href="https://github.com/Demon404/React-Native-Study">React-Native-Study</a><br>
+后续会更新带Header的ListView和用ListView写的九宫格，喜欢的同学可以支持一下，么么哒！</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2781235-b945831fba3e7c01.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="from Demon404"></p>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/javascript">
+!function(){if("undefined"!=typeof self&&self.Prism&&self.document){var e={html:"HTML",xml:"XML",svg:"SVG",mathml:"MathML",css:"CSS",clike:"C-like",javascript:"JavaScript",abap:"ABAP",actionscript:"ActionScript",apacheconf:"Apache Configuration",apl:"APL",applescript:"AppleScript",asciidoc:"AsciiDoc",aspnet:"ASP.NET (C#)",autoit:"AutoIt",autohotkey:"AutoHotkey",basic:"BASIC",csharp:"C#",cpp:"C++",coffeescript:"CoffeeScript","css-extras":"CSS Extras",fsharp:"F#",glsl:"GLSL",http:"HTTP",inform7:"Inform 7",json:"JSON",latex:"LaTeX",lolcode:"LOLCODE",matlab:"MATLAB",mel:"MEL",nasm:"NASM",nginx:"nginx",nsis:"NSIS",objectivec:"Objective-C",ocaml:"OCaml",parigp:"PARI/GP",php:"PHP","php-extras":"PHP Extras",powershell:"PowerShell",jsx:"React JSX",rest:"reST (reStructuredText)",sas:"SAS",sass:"Sass (Sass)",scss:"Sass (Scss)",sql:"SQL",typescript:"TypeScript",vhdl:"VHDL",vim:"vim",wiki:"Wiki markup",yaml:"YAML"};Prism.hooks.add("before-highlight",function(s){var a=s.element.parentNode;if(a&&/pre/i.test(a.nodeName)){var t,i,r=a.getAttribute("data-language")||e[s.language]||s.language.substring(0,1).toUpperCase()+s.language.substring(1),l=a.previousSibling;l&&/\s*\bprism-show-language\b\s*/.test(l.className)&&l.firstChild&&/\s*\bprism-show-language-label\b\s*/.test(l.firstChild.className)?i=l.firstChild:(t=document.createElement("div"),i=document.createElement("div"),i.className="prism-show-language-label",t.className="prism-show-language",t.appendChild(i),a.parentNode.insertBefore(t,a)),i.innerHTML=r}})}}();
+</script>
+
+
+</body>
+
+</html>
