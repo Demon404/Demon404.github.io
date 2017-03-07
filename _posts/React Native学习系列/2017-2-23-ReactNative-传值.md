@@ -88,7 +88,7 @@ export default class Fview extends Component {
 class MyView extends Component {
    render() {
       return (
-         <Text>{this.props.txt}</Text>{/*通过props传值*/}
+         <Text>{this.props.text}</Text>{/*通过props传值*/}
       );
    }
 }
